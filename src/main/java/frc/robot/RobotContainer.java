@@ -28,6 +28,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    m_DriveSubsystem.setDefaultCommand(m_DriveSubsystem.drive(()-> -m_driverController.getLeftY(), ()-> -m_driverController.getLeftX()));
     configureBindings();
   }
 
