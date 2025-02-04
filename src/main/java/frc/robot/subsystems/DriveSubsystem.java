@@ -6,30 +6,32 @@ package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
-  CANSparkMax flMotor = new CANSparkMax(DriveConstants.flSparkID, MotorType.kBrushless); 
-  CANSparkMax blMotor = new CANSparkMax(DriveConstants.blSparkID, MotorType.kBrushless); 
-  CANSparkMax frMotor = new CANSparkMax(DriveConstants.frSparkID, MotorType.kBrushless); 
-  CANSparkMax brMotor = new CANSparkMax(DriveConstants.brSparkID, MotorType.kBrushless); 
+  SparkMax flMotor = new SparkMax(DriveConstants.flSparkID, MotorType.kBrushless); 
+  SparkMax blMotor = new SparkMax(DriveConstants.blSparkID, MotorType.kBrushless); 
+  SparkMax frMotor = new SparkMax(DriveConstants.frSparkID, MotorType.kBrushless); 
+  SparkMax brMotor = new SparkMax(DriveConstants.brSparkID, MotorType.kBrushless); 
   DifferentialDrive drive = new DifferentialDrive(flMotor,frMotor);
 
   public DriveSubsystem() {
-    flMotor.restoreFactoryDefaults();
-    frMotor.restoreFactoryDefaults();
-    blMotor.restoreFactoryDefaults();
-    brMotor.restoreFactoryDefaults();
-    blMotor.follow(flMotor);
-    brMotor.follow(frMotor);
+    SparkBaseConfig config = new SparkMaxConfig();
+    SparkBaseConfig config2 = new SparkMaxConfig();
+    brMotor.configure(config.follow(frMotor), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    blMotor.configure(config2.follow(flMotor), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
